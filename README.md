@@ -52,11 +52,56 @@ For development, you can run directly from the Debug build:
 # Build
 dotnet build
 
-# Run
+# Run (stdio mode - for Claude Desktop)
 dotnet run --project RadarrSonarrMcp
+
+# Run (HTTP mode - for web-based clients)
+dotnet run --project RadarrSonarrMcp -- --http
 
 # Test
 dotnet test
+```
+
+## Transport Modes
+
+This MCP server supports two transport modes:
+
+### stdio Mode (Default)
+- **Best for**: Claude Desktop, ChatGPT Desktop, and other desktop MCP clients
+- **How to use**: Run without any flags (default mode)
+- **Command**: `dotnet run` or just execute the built .exe
+- **Communication**: Standard input/output streams
+
+### HTTP Mode
+- **Best for**: Web-based clients, custom integrations, testing with HTTP tools
+- **How to use**: Add `--http` or `--mode=http` flag when running
+- **Command**: `dotnet run -- --http`
+- **Port**: Configured in `config.json` (default: 3000)
+- **Endpoint**: `http://localhost:3000` (or your configured port)
+
+**Example HTTP mode:**
+```powershell
+# Run in HTTP mode
+dotnet run --project RadarrSonarrMcp -- --http
+
+# Or from published executable
+.\RadarrSonarrMcp.exe --http
+```
+
+The server will display which mode it's running in at startup:
+```
+Radarr/Sonarr MCP Server
+========================
+
+Loaded configuration:
+  NAS IP: 10.0.0.23
+  Sonarr URL: http://10.0.0.23:8989/api/v3
+  Radarr URL: http://10.0.0.23:7878/api/v3
+  Transport Mode: HTTP
+  HTTP Port: 3000
+
+Starting HTTP MCP server...
+Server listening on: http://localhost:3000
 ```
 
 ## Configuration
@@ -82,9 +127,14 @@ Edit the `config.json` file in the same directory as the executable:
   "PlexConfig": {
     "BaseUrl": "http://10.0.0.23:32400",
     "Token": "YOUR_PLEX_TOKEN"
+  },
+  "ServerConfig": {
+    "Port": 3000
   }
 }
 ```
+
+**Note**: The `ServerConfig.Port` is only used when running in HTTP mode.
 
 ### Finding API Keys
 

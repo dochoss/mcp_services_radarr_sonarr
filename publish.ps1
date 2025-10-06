@@ -79,9 +79,9 @@ Write-Host "============================================" -ForegroundColor Cyan
 Write-Host "Next Steps:" -ForegroundColor Cyan
 Write-Host "1. Ensure config.json is in the publish folder" -ForegroundColor White
 Write-Host "2. Test the executable: cd `"$PublishPath`"; .\RadarrSonarrMcp.exe" -ForegroundColor White
-Write-Host "3. Configure ChatGPT/Claude Desktop (see WINDOWS_SETUP.md)" -ForegroundColor White
+Write-Host "3. Configure Claude Desktop (stdio, see WINDOWS_SETUP.md)" -ForegroundColor White
 Write-Host ""
-Write-Host "For ChatGPT Desktop or Claude Desktop, use this path:" -ForegroundColor Yellow
+Write-Host "For Claude Desktop, use this path:" -ForegroundColor Yellow
 Write-Host ($PublishPath + "\RadarrSonarrMcp.exe").Replace('\', '\\') -ForegroundColor Green
 Write-Host ""
 
