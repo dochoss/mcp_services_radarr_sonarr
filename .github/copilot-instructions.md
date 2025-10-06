@@ -59,7 +59,7 @@ RadarrSonarrMcp.Tests/
 - Configuration schema:
   ```json
   {
-    "NasConfig": {"Ip": "...", "Port": "..."},
+    "NasConfig": {"Ip": "localhost", "Port": "..."},
     "RadarrConfig": {"ApiKey": "...", "BasePath": "/api/v3", "Port": "7878"},
     "SonarrConfig": {"ApiKey": "...", "BasePath": "/api/v3", "Port": "8989"},
     "PlexConfig": {"BaseUrl": "...", "Token": "..."},

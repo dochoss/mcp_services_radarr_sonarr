@@ -3,27 +3,18 @@ namespace RadarrSonarrMcp.Configuration;
 /// <summary>
 /// Configuration for Radarr API access.
 /// </summary>
-public class RadarrConfig
+public class RadarrConfig : IServiceConfig
 {
-    /// <summary>
-    /// API key for authentication with Radarr.
-    /// </summary>
+    /// <inheritdoc />
     public string ApiKey { get; set; } = string.Empty;
 
-    /// <summary>
-    /// Base API path (e.g., "/api/v3").
-    /// </summary>
+    /// <inheritdoc />
     public string BasePath { get; set; } = "/api/v3";
 
-    /// <summary>
-    /// Port where Radarr is running (default: 7878).
-    /// </summary>
+    /// <inheritdoc />
     public string Port { get; set; } = "7878";
 
-    /// <summary>
-    /// Validates that required configuration is present.
-    /// </summary>
-    /// <returns>True if configuration is valid.</returns>
+    /// <inheritdoc />
     public bool IsValid()
     {
         return !string.IsNullOrWhiteSpace(ApiKey) &&
@@ -31,11 +22,7 @@ public class RadarrConfig
                !string.IsNullOrWhiteSpace(Port);
     }
 
-    /// <summary>
-    /// Constructs the base URL for Radarr API using NAS IP.
-    /// </summary>
-    /// <param name="nasIp">IP address of the NAS.</param>
-    /// <returns>Full base URL for Radarr API.</returns>
+    /// <inheritdoc />
     public string GetBaseUrl(string nasIp)
     {
         return $"http://{nasIp}:{Port}{BasePath}";

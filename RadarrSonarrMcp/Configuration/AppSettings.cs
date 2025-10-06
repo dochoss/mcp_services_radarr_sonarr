@@ -6,9 +6,9 @@ namespace RadarrSonarrMcp.Configuration;
 public class AppSettings
 {
     /// <summary>
-    /// NAS configuration for base URL construction.
+    /// Server configuration for base URL construction.
     /// </summary>
-    public NasConfig NasConfig { get; set; } = new();
+    public ServicesServerConfig ServicesServerConfig { get; set; } = new();
 
     /// <summary>
     /// Radarr API configuration.
@@ -28,16 +28,16 @@ public class AppSettings
     /// <summary>
     /// MCP Server configuration.
     /// </summary>
-    public ServerConfig ServerConfig { get; set; } = new();
+    public McpServerConfig McpServerConfig { get; set; } = new();
 }
 
 /// <summary>
-/// NAS network configuration.
+/// Server network configuration where services are running (Radarr, Sonarr, etc.).
 /// </summary>
-public class NasConfig
+public class ServicesServerConfig
 {
     /// <summary>
-    /// IP address of the NAS server.
+    /// IP address or hostname of the server (defaults to localhost for local installations).
     /// </summary>
     public string Ip { get; set; } = "localhost";
 
@@ -50,7 +50,7 @@ public class NasConfig
 /// <summary>
 /// MCP Server configuration.
 /// </summary>
-public class ServerConfig
+public class McpServerConfig
 {
     /// <summary>
     /// Port for the MCP server to listen on.

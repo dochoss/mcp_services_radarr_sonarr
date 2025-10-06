@@ -5,10 +5,12 @@ This guide explains how to set up and run the Radarr/Sonarr MCP Server on Window
 ## Understanding MCP Server Architecture
 
 This MCP server uses **stdio transport** (standard input/output), which means:
-- ChatGPT Desktop and Claude Desktop will **launch the executable directly** as a subprocess
+- Claude Desktop will **launch the executable directly** as a subprocess
 - There's no HTTP server to connect to
 - The desktop apps communicate via stdin/stdout with the process
 - Each desktop app manages its own instance of the server
+
+**Default Configuration**: The server is configured to connect to Radarr and Sonarr running on `localhost` by default, which is ideal for local installations. If your services are running on a different machine, you can change the `Ip` setting in `config.json` to the appropriate server address.
 
 ## Quick Start
 
@@ -36,14 +38,20 @@ The self-contained build includes the .NET runtime, so users don't need .NET ins
 Make sure your `config.json` is in the publish folder:
 
 ```powershell
-# Copy your config to the publish folder
-Copy-Item "RadarrSonarrMcp\config.json" "RadarrSonarrMcp\bin\Release\net8.0\win-x64\publish\config.json"
+# Copy the example config and customize it
+Copy-Item "RadarrSonarrMcp\config.example.json" "RadarrSonarrMcp\bin\Release\net8.0\win-x64\publish\config.json"
 ```
 
 Or edit the config directly at:
 ```
 RadarrSonarrMcp\bin\Release\net8.0\win-x64\publish\config.json
 ```
+
+**Configuration Notes:**
+- The default `Ip` is set to `localhost` for local installations
+- Update the API keys for Radarr and Sonarr (find them in Settings → General → Security)
+- If Radarr/Sonarr are running on a different machine, change the `Ip` to that server's address
+- Default ports are 7878 for Radarr and 8989 for Sonarr
 
 ### 3. Configure Desktop Apps
 
@@ -197,13 +205,13 @@ If the server fails to start:
 
 1. Verify `config.json` exists in the executable's directory
 2. Verify all API keys are correct
-3. Verify Radarr/Sonarr URLs are accessible
+3. Verify Radarr/Sonarr URLs are accessible (use `localhost` if running locally)
 4. Check the config matches this format:
 
 ```json
 {
   "NasConfig": {
-    "Ip": "10.0.0.23",
+    "Ip": "localhost",
     "Port": "7878"
   },
   "RadarrConfig": {
@@ -215,6 +223,13 @@ If the server fails to start:
     "ApiKey": "your_actual_api_key",
     "BasePath": "/api/v3",
     "Port": "8989"
+  },
+  "PlexConfig": {
+    "BaseUrl": "http://localhost:32400",
+    "Token": "your_plex_token_here"
+  },
+  "ServerConfig": {
+    "Port": 3000
   }
 }
 ```

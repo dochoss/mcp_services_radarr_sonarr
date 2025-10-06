@@ -90,15 +90,15 @@ Copy `config.example.json` to `config.json` and update with your settings:
 
 ```json
 {
-  "NasConfig": {
-    "Ip": "10.0.0.23"
+  "ServicesServerConfig": {
+    "Ip": "localhost"
   },
   "SonarrConfig": {
     "ApiKey": "your_sonarr_api_key_here",
     "BasePath": "/api/v3",
     "Port": "8989"
   },
-  "ServerConfig": {
+  "McpServerConfig": {
     "Port": 3000
   }
 }

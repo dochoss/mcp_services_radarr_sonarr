@@ -1,13 +1,4 @@
-﻿using System.ComponentModel;
-using System.Text.Json;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using ModelContextProtocol.Server;
-using RadarrSonarrMcp.Configuration;
-using RadarrSonarrMcp.Models;
-using RadarrSonarrMcp.Services;
+﻿using System.Text.Json;
 
 namespace RadarrSonarrMcp;
 
@@ -26,8 +17,8 @@ class Program
     try
     {
       // Determine transport mode from command-line arguments
-      bool useHttp = args.Contains("--http") || 
-                     args.Contains("--mode=http") || 
+      bool useHttp = args.Contains("--http") ||
+                     args.Contains("--mode=http") ||
                      args.Any(a => a.StartsWith("--mode=") && a.EndsWith("http"));
 
       // Load configuration
@@ -53,7 +44,7 @@ class Program
       }
 
       Console.Error.WriteLine($"Loaded configuration:");
-      Console.Error.WriteLine($"  NAS IP: {settings.NasConfig.Ip}");
+      Console.Error.WriteLine($"  Server IP: {settings.NasConfig.Ip}");
       Console.Error.WriteLine($"  Sonarr URL: {settings.SonarrConfig.GetBaseUrl(settings.NasConfig.Ip)}");
       Console.Error.WriteLine($"  Radarr URL: {settings.RadarrConfig.GetBaseUrl(settings.NasConfig.Ip)}");
       Console.Error.WriteLine($"  Transport Mode: {(useHttp ? "HTTP" : "stdio")}");
@@ -87,25 +78,25 @@ class Program
   /// </summary>
   private static async Task<int> RunStdioServerAsync(string[] args, AppSettings settings)
   {
-      // Create host with MCP server
-      var builder = Host.CreateApplicationBuilder(args);
+    // Create host with MCP server
+    var builder = Host.CreateApplicationBuilder(args);
 
-      // Configure logging to stderr (MCP requirement)
-      builder.Logging.ClearProviders();
-      builder.Logging.AddConsole(options =>
-      {
-        options.LogToStandardErrorThreshold = LogLevel.Trace;
-      });
-      builder.Logging.SetMinimumLevel(LogLevel.Information);
+    // Configure logging to stderr (MCP requirement)
+    builder.Logging.ClearProviders();
+    builder.Logging.AddConsole(options =>
+    {
+      options.LogToStandardErrorThreshold = LogLevel.Trace;
+    });
+    builder.Logging.SetMinimumLevel(LogLevel.Information);
 
-      // Register services
-      RegisterServices(builder.Services, settings);
+    // Register services
+    RegisterServices(builder.Services, settings);
 
-      // Configure MCP server with stdio transport
-      builder.Services
-          .AddMcpServer()
-          .WithStdioServerTransport()
-          .WithToolsFromAssembly();
+    // Configure MCP server with stdio transport
+    builder.Services
+        .AddMcpServer()
+        .WithStdioServerTransport()
+        .WithToolsFromAssembly();
 
     Console.Error.WriteLine("Starting stdio MCP server for Claude Desktop...");
     PrintRegisteredTools();

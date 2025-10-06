@@ -94,9 +94,9 @@ Radarr/Sonarr MCP Server
 ========================
 
 Loaded configuration:
-  NAS IP: 10.0.0.23
-  Sonarr URL: http://10.0.0.23:8989/api/v3
-  Radarr URL: http://10.0.0.23:7878/api/v3
+  Server IP: localhost
+  Sonarr URL: http://localhost:8989/api/v3
+  Radarr URL: http://localhost:7878/api/v3
   Transport Mode: HTTP
   HTTP Port: 3000
 
@@ -110,8 +110,8 @@ Edit the `config.json` file in the same directory as the executable:
 
 ```json
 {
-  "NasConfig": {
-    "Ip": "10.0.0.23",
+  "ServicesServerConfig": {
+    "Ip": "localhost",
     "Port": "7878"
   },
   "RadarrConfig": {
@@ -125,16 +125,16 @@ Edit the `config.json` file in the same directory as the executable:
     "Port": "8989"
   },
   "PlexConfig": {
-    "BaseUrl": "http://10.0.0.23:32400",
+    "BaseUrl": "http://localhost:32400",
     "Token": "YOUR_PLEX_TOKEN"
   },
-  "ServerConfig": {
+  "McpServerConfig": {
     "Port": 3000
   }
 }
 ```
 
-**Note**: The `ServerConfig.Port` is only used when running in HTTP mode.
+**Note**: The `McpServerConfig.Port` is only used when running in HTTP mode.
 
 ### Finding API Keys
 
