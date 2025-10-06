@@ -1,25 +1,43 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
+## Visual Studio / .NET
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
 
-# Distribution / packaging
-dist/
-build/
-*.egg-info/
+# Visual Studio cache/options
+.vs/
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
 
-# Virtual environments
-venv/
-env/
-ENV/
+# Test Results
+TestResults/
+*.trx
+*.coverage
 
-# Local development settings
-.env
-config.json
+# .NET User files
+*.userprefs
 
 # Editor settings
 .vscode/
 .idea/
+
+# Local development settings
+.env
+config.json
 
 # Logs
 *.log
