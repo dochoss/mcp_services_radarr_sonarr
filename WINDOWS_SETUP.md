@@ -20,7 +20,7 @@ First, publish your application as a self-contained executable:
 
 ```powershell
 # Navigate to the project directory
-cd C:\Users\Bo\source\repos\mcp_services_radarr_sonarr
+cd C:\Users\YourUsername\source\repos\mcp_services_radarr_sonarr
 
 # Run the publish script
 .\publish.ps1
@@ -83,7 +83,7 @@ This server currently uses stdio transport (standard input/output), which works 
 {
   "mcpServers": {
     "radarr-sonarr": {
-      "command": "C:\\Users\\Bo\\source\\repos\\mcp_services_radarr_sonarr\\RadarrSonarrMcp\\bin\\Release\\net8.0\\win-x64\\publish\\RadarrSonarrMcp.exe",
+      "command": "<REPO ROOT>\\RadarrSonarrMcp\\bin\\Release\\net8.0\\win-x64\\publish\\RadarrSonarrMcp.exe",
       "args": [],
       "env": {}
     }
@@ -113,7 +113,7 @@ If you want to run directly from your development build (useful during developme
 {
   "mcpServers": {
     "radarr-sonarr": {
-      "command": "C:\\Users\\Bo\\source\\repos\\mcp_services_radarr_sonarr\\RadarrSonarrMcp\\bin\\Debug\\net8.0\\RadarrSonarrMcp.exe",
+      "command": "<REPO ROOT>\\RadarrSonarrMcp\\bin\\Debug\\net8.0\\RadarrSonarrMcp.exe",
       "args": [],
       "env": {}
     }
@@ -126,7 +126,7 @@ If you want to run directly from your development build (useful during developme
 {
   "mcpServers": {
     "radarr-sonarr": {
-      "command": "C:\\Users\\Bo\\source\\repos\\mcp_services_radarr_sonarr\\RadarrSonarrMcp\\bin\\Debug\\net8.0\\RadarrSonarrMcp.exe",
+      "command": "<REPO ROOT>\\RadarrSonarrMcp\\bin\\Debug\\net8.0\\RadarrSonarrMcp.exe",
       "args": [],
       "env": {}
     }
@@ -150,10 +150,10 @@ If you want the MCP server to run as a background Windows Service (for always-on
 
 ```powershell
 # Run as Administrator
-nssm install RadarrSonarrMCP "C:\Users\Bo\source\repos\mcp_services_radarr_sonarr\RadarrSonarrMcp\bin\Release\net8.0\win-x64\publish\RadarrSonarrMcp.exe"
+nssm install RadarrSonarrMCP "C:\Users\YourUsername\source\repos\mcp_services_radarr_sonarr\RadarrSonarrMcp\bin\Release\net8.0\win-x64\publish\RadarrSonarrMcp.exe"
 
 # Configure the service
-nssm set RadarrSonarrMCP AppDirectory "C:\Users\Bo\source\repos\mcp_services_radarr_sonarr\RadarrSonarrMcp\bin\Release\net8.0\win-x64\publish"
+nssm set RadarrSonarrMCP AppDirectory "<REPO ROOT>\RadarrSonarrMcp\bin\Release\net8.0\win-x64\publish"
 nssm set RadarrSonarrMCP DisplayName "Radarr/Sonarr MCP Server"
 nssm set RadarrSonarrMCP Description "MCP Server for Radarr and Sonarr integration"
 nssm set RadarrSonarrMCP Start SERVICE_AUTO_START
@@ -195,7 +195,7 @@ The MCP server writes logs to stderr. To view logs:
 3. **Manual testing**: Run the executable in PowerShell to see output
 
 ```powershell
-cd C:\Users\Bo\source\repos\mcp_services_radarr_sonarr\RadarrSonarrMcp\bin\Release\net8.0\win-x64\publish
+cd C:\Users\YourUsername\source\repos\mcp_services_radarr_sonarr\RadarrSonarrMcp\bin\Release\net8.0\win-x64\publish
 .\RadarrSonarrMcp.exe
 ```
 
@@ -210,7 +210,7 @@ If the server fails to start:
 
 ```json
 {
-  "NasConfig": {
+  "ServicesServerConfig": {
     "Ip": "localhost",
     "Port": "7878"
   },
@@ -228,7 +228,7 @@ If the server fails to start:
     "BaseUrl": "http://localhost:32400",
     "Token": "your_plex_token_here"
   },
-  "ServerConfig": {
+  "McpServerConfig": {
     "Port": 3000
   }
 }
@@ -243,18 +243,17 @@ You can test the MCP server manually using the MCP Inspector:
 npm install -g @modelcontextprotocol/inspector
 
 # Run the inspector
-mcp-inspector C:\Users\Bo\source\repos\mcp_services_radarr_sonarr\RadarrSonarrMcp\bin\Release\net8.0\win-x64\publish\RadarrSonarrMcp.exe
+mcp-inspector C:\Users\YourUsername\source\repos\mcp_services_radarr_sonarr\RadarrSonarrMcp\bin\Release\net8.0\win-x64\publish\RadarrSonarrMcp.exe
 ```
 
 ## File Locations Reference
 
 | Item | Location |
 |------|----------|
-| **Source Code** | `C:\Users\Bo\source\repos\mcp_services_radarr_sonarr\RadarrSonarrMcp\` |
-| **Debug Build** | `RadarrSonarrMcp\bin\Debug\net8.0\RadarrSonarrMcp.exe` |
-| **Release Build** | `RadarrSonarrMcp\bin\Release\net8.0\win-x64\publish\RadarrSonarrMcp.exe` |
+| **Source Code** | `<REPO ROOT>\RadarrSonarrMcp\` |
+| **Debug Build** | `<REPO ROOT>\RadarrSonarrMcp\bin\Debug\net8.0\RadarrSonarrMcp.exe` |
+| **Release Build** | `<REPO ROOT>\RadarrSonarrMcp\bin\Release\net8.0\win-x64\publish\RadarrSonarrMcp.exe` |
 | **Config File** | Same directory as executable + `config.json` |
-| **ChatGPT Config** | `%APPDATA%\OpenAI\ChatGPT\mcp_config.json` |
 | **Claude Config** | `%APPDATA%\Claude\claude_desktop_config.json` |
 
 ## Available MCP Tools

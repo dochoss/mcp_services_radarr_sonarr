@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "radarr-sonarr": {
-      "command": "C:\\Users\\me\\source\\repos\\mcp_services_radarr_sonarr\\RadarrSonarrMcp\\bin\\Release\\net8.0\\win-x64\\publish\\RadarrSonarrMcp.exe",
+      "command": "C:\\Users\\YourUsername\\source\\repos\\mcp_services_radarr_sonarr\\RadarrSonarrMcp\\bin\\Release\\net8.0\\win-x64\\publish\\RadarrSonarrMcp.exe",
       "args": [],
       "env": {}
     }
