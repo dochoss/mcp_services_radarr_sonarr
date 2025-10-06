@@ -62,7 +62,6 @@ RadarrSonarrMcp.Tests/
     "NasConfig": {"Ip": "...", "Port": "..."},
     "RadarrConfig": {"ApiKey": "...", "BasePath": "/api/v3", "Port": "7878"},
     "SonarrConfig": {"ApiKey": "...", "BasePath": "/api/v3", "Port": "8989"},
-    "JellyfinConfig": {"BaseUrl": "...", "ApiKey": "...", "UserId": "..."},
     "PlexConfig": {"BaseUrl": "...", "Token": "..."},
     "ServerConfig": {"Port": 3000}
   }

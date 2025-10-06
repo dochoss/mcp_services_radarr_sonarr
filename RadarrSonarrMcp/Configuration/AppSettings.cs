@@ -21,11 +21,6 @@ public class AppSettings
     public SonarrConfig SonarrConfig { get; set; } = new();
 
     /// <summary>
-    /// Jellyfin API configuration.
-    /// </summary>
-    public JellyfinConfig? JellyfinConfig { get; set; }
-
-    /// <summary>
     /// Plex API configuration.
     /// </summary>
     public PlexConfig? PlexConfig { get; set; }
@@ -61,27 +56,6 @@ public class ServerConfig
     /// Port for the MCP server to listen on.
     /// </summary>
     public int Port { get; set; } = 3000;
-}
-
-/// <summary>
-/// Jellyfin media server configuration.
-/// </summary>
-public class JellyfinConfig
-{
-    /// <summary>
-    /// Base URL for Jellyfin API.
-    /// </summary>
-    public string BaseUrl { get; set; } = string.Empty;
-
-    /// <summary>
-    /// API key for authentication.
-    /// </summary>
-    public string ApiKey { get; set; } = string.Empty;
-
-    /// <summary>
-    /// User ID for querying watched status.
-    /// </summary>
-    public string UserId { get; set; } = string.Empty;
 }
 
 /// <summary>

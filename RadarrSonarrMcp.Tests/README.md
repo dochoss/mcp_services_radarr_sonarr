@@ -21,12 +21,7 @@ RadarrSonarrMcp.Tests/
 
 ## Running Tests
 
-### Run all tests (clean output - recommended)
-```powershell
-.\run-tests.ps1
-```
-
-### Run all tests (standard)
+### Run all tests
 ```powershell
 dotnet test
 ```

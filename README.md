@@ -1,189 +1,194 @@
 # Radarr and Sonarr MCP Server
 
-A Python-based Model Context Protocol (MCP) server that provides AI assistants like Claude with access to your Radarr (movies) and Sonarr (TV series) data.
+A C# .NET-based Model Context Protocol (MCP) server that provides AI assistants like Claude and ChatGPT with access to your Radarr (movies) and Sonarr (TV series) data.
 
 ## Overview
 
-This MCP server allows AI assistants to query your movie and TV show collection via Radarr and Sonarr APIs. Built with FastMCP, it implements the standardized protocol for AI context that Claude Desktop and other MCP-compatible clients can use.
+This MCP server allows AI assistants to query and manage your movie and TV show collection via Radarr and Sonarr APIs. Built with the ModelContextProtocol SDK, it implements the standardized protocol for AI context that Claude Desktop, ChatGPT Desktop, and other MCP-compatible clients can use.
 
 ## Features
 
-- **Native MCP Implementation**: Built with FastMCP for seamless AI integration
-- **Radarr Integration**: Access your movie collection
-- **Sonarr Integration**: Access your TV show and episode data
-- **Rich Filtering**: Filter by year, watched status, actors, and more
-- **Claude Desktop Compatible**: Works seamlessly with Claude's MCP client
-- **Easy Setup**: Interactive configuration wizard
-- **Well-tested**: Comprehensive test suite for reliability
+- **Native MCP Implementation**: Built with ModelContextProtocol SDK for seamless AI integration
+- **Radarr Integration**: Full access to your movie collection (list, search, add, update, delete)
+- **Sonarr Integration**: Complete TV show and episode management
+- **Rich API Access**: Quality profiles, root folders, system status, download queue
+- **Claude Desktop Compatible**: Works seamlessly with Claude Desktop via stdio transport
+- **Windows-Optimized**: Easy setup on Windows 11 with PowerShell scripts
+- **Self-Contained Executable**: No .NET runtime installation required
+- **Well-Tested**: Comprehensive xUnit test suite for reliability
 
-## Installation
+## Installation & Setup
 
-### From Source
+### Windows 11 Quick Start
 
-1. Clone this repository:
-   ```bash
+1. **Clone and Build:**
+   ```powershell
    git clone https://github.com/yourusername/radarr-sonarr-mcp.git
-   cd radarr-sonarr-mcp-python
+   cd radarr-sonarr-mcp
+   .\publish.ps1
    ```
 
-2. Install the package:
-   ```bash
-   pip install -e .
-   ```
+2. **Configure:**
+   - Edit `RadarrSonarrMcp\bin\Release\net8.0\win-x64\publish\config.json`
+   - Add your Radarr/Sonarr API keys and server details
 
-### Using pip (coming soon)
+3. **Connect to Desktop App:**
+   - **Claude Desktop**: Settings → Developer → Edit Config
+   - **ChatGPT Desktop**: Settings → MCP Servers
+   - Add the executable path (see example config files)
 
-```bash
-pip install radarr-sonarr-mcp
+4. **Test:**
+   - Restart your desktop app
+   - Ask: "What movies do I have in Radarr?"
+
+📖 **See [QUICKSTART.md](QUICKSTART.md) for the fastest setup**  
+📖 **See [WINDOWS_SETUP.md](WINDOWS_SETUP.md) for detailed instructions**
+
+### Development Build
+
+For development, you can run directly from the Debug build:
+
+```powershell
+# Build
+dotnet build
+
+# Run
+dotnet run --project RadarrSonarrMcp
+
+# Test
+dotnet test
 ```
-
-## Quick Start
-
-1. Configure the server:
-   ```bash
-   radarr-sonarr-mcp configure
-   ```
-   Follow the prompts to enter your Radarr/Sonarr API keys and other settings.
-
-2. Start the server:
-   ```bash
-   radarr-sonarr-mcp start
-   ```
-
-3. Connect Claude Desktop:
-   - In Claude Desktop, go to Settings > MCP Servers
-   - Add a new server with URL: `http://localhost:3000` (or your configured port)
 
 ## Configuration
 
-The configuration wizard will guide you through setting up:
-
-- NAS/Server IP address
-- Radarr API key and port
-- Sonarr API key and port
-- MCP server port
-
-You can also manually edit the `config.json` file:
+Edit the `config.json` file in the same directory as the executable:
 
 ```json
 {
-  "nasConfig": {
-    "ip": "10.0.0.23",
-    "port": "7878"
+  "NasConfig": {
+    "Ip": "10.0.0.23",
+    "Port": "7878"
   },
-  "radarrConfig": {
-    "apiKey": "YOUR_RADARR_API_KEY",
-    "basePath": "/api/v3",
-    "port": "7878"
+  "RadarrConfig": {
+    "ApiKey": "YOUR_RADARR_API_KEY",
+    "BasePath": "/api/v3",
+    "Port": "7878"
   },
-  "sonarrConfig": {
-    "apiKey": "YOUR_SONARR_API_KEY",
-    "basePath": "/api/v3",
-    "port": "8989"
+  "SonarrConfig": {
+    "ApiKey": "YOUR_SONARR_API_KEY",
+    "BasePath": "/api/v3",
+    "Port": "8989"
   },
-  "server": {
-    "port": 3000
+  "PlexConfig": {
+    "BaseUrl": "http://10.0.0.23:32400",
+    "Token": "YOUR_PLEX_TOKEN"
   }
 }
 ```
 
+### Finding API Keys
+
+**Radarr API Key:**
+1. Open Radarr in your browser
+2. Go to Settings → General → Security
+3. Copy the API Key
+
+**Sonarr API Key:**
+1. Open Sonarr in your browser
+2. Go to Settings → General → Security
+3. Copy the API Key
+
 ## Available MCP Tools
 
-This server provides the following tools to Claude:
+### Radarr (Movies)
+- `radarr_get_all_movies` - Get all movies in your library
+- `radarr_get_movie_by_id` - Get details for a specific movie
+- `radarr_search_movies` - Search for movies to add
+- `radarr_add_movie` - Add a new movie to Radarr
+- `radarr_update_movie` - Update movie settings
+- `radarr_delete_movie` - Delete a movie from Radarr
+- `radarr_get_queue` - View the download queue
+- `radarr_get_missing_movies` - Get monitored movies that are missing
+- `radarr_execute_command` - Execute commands (MovieSearch, RefreshMovie, etc.)
+- `radarr_get_system_status` - Get Radarr system information
+- `radarr_get_root_folders` - Get configured root folders
+- `radarr_get_quality_profiles` - Get quality profiles
 
-### Movies
-- `get_available_movies` - Get a list of movies with optional filters
-- `lookup_movie` - Search for a movie by title
-- `get_movie_details` - Get detailed information about a specific movie
+### Sonarr (TV Shows)
+- `sonarr_get_all_series` - Get all TV series in your library
+- `sonarr_get_series` - Get details for a specific series
+- `sonarr_add_series` - Add a new TV series to Sonarr
+- `sonarr_update_series` - Update series settings
+- `sonarr_get_episodes` - Get episodes for a series
+- `sonarr_get_missing_episodes` - Get monitored episodes that are missing
+- `sonarr_execute_command` - Execute commands (SeriesSearch, EpisodeSearch, etc.)
+- `sonarr_get_queue` - View the download queue
+- `sonarr_get_system_status` - Get Sonarr system information
+- `sonarr_get_root_folders` - Get configured root folders
+- `sonarr_get_quality_profiles` - Get quality profiles
 
-### Series
-- `get_available_series` - Get a list of TV series with optional filters
-- `lookup_series` - Search for a TV series by title
-- `get_series_details` - Get detailed information about a specific series
-- `get_series_episodes` - Get episodes for a specific series
+## Example Queries
 
-### Resources
+Once connected, you can ask ChatGPT or Claude:
 
-The server also provides standard MCP resources:
-
-- `/movies` - Browse all available movies
-- `/series` - Browse all available TV series
-
-### Filtering Options
-
-Most tools support various filtering options:
-
-- `year` - Filter by release year
-- `watched` - Filter by watched status (true/false)
-- `downloaded` - Filter by download status (true/false)
-- `watchlist` - Filter by watchlist status (true/false)
-- `actors` - Filter by actor/cast name
-- `actresses` - Filter by actress name (movies only)
-
-## Example Queries for Claude
-
-Once your MCP server is connected to Claude Desktop, you can ask questions like:
-
-- "What sci-fi movies from 2023 do I have?"
-- "Show me TV shows starring Pedro Pascal"
-- "Do I have any unwatched episodes of The Mandalorian?"
-- "Find movies with Tom Hanks that I haven't watched yet"
-- "How many episodes of Stranger Things do I have downloaded?"
-
-## Finding API Keys
-
-### Radarr API Key
-1. Open Radarr in your browser
-2. Go to Settings > General
-3. Find the "API Key" section
-4. Copy the API Key
-
-### Sonarr API Key
-1. Open Sonarr in your browser  
-2. Go to Settings > General
-3. Find the "API Key" section
-4. Copy the API Key
-
-## Command-Line Interface
-
-The package provides a command-line interface:
-
-- `radarr-sonarr-mcp configure` - Run configuration wizard
-- `radarr-sonarr-mcp start` - Start the MCP server
-- `radarr-sonarr-mcp status` - Show the current configuration
+- "What movies do I have in Radarr?"
+- "Search for The Matrix and add it to Radarr"
+- "What TV shows am I tracking in Sonarr?"
+- "Show me my missing episodes"
+- "Add Breaking Bad to Sonarr"
+- "What's in my download queue?"
+- "Update Game of Thrones to use the HD quality profile"
 
 ## Development
 
-### Running Tests
+### Building
 
-To run the test suite:
+```powershell
+# Build the project
+dotnet build
 
-```bash
-# Install development dependencies
-pip install -e ".[dev]"
+# Run the project
+dotnet run --project RadarrSonarrMcp
 
-# Run tests
-pytest
+# Publish a release build
+.\publish.ps1
+```
+
+### Testing
+
+```powershell
+# Run all tests
+dotnet test
 
 # Run tests with coverage
-pytest --cov=radarr_sonarr_mcp
+dotnet test /p:CollectCoverage=true
 ```
 
-### Local Development
+### Project Structure
 
-For quick development and testing:
+```
+RadarrSonarrMcp/
+├── Configuration/     # Configuration models
+├── Models/           # Data models for Radarr/Sonarr
+├── Services/         # API service implementations
+├── RadarrTools.cs    # Radarr MCP tool definitions
+├── SonarrTools.cs    # Sonarr MCP tool definitions
+└── Program.cs        # Main entry point
 
-```bash
-# Run directly without installation
-python run.py
+RadarrSonarrMcp.Tests/
+├── Configuration/    # Config tests
+├── Models/          # Model tests
+└── Services/        # Service tests
 ```
 
-## Requirements
+## Tech Stack
 
-- Python 3.7+
-- FastMCP
-- Requests
-- Pydantic
+- **.NET 8.0** - Runtime
+- **C# 12** - Language
+- **ModelContextProtocol SDK** - MCP implementation
+- **xUnit** - Testing framework
+- **FluentAssertions** - Assertion library
+- **Moq** - Mocking framework
 
 ## Notes
 

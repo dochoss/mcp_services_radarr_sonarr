@@ -13,11 +13,6 @@
     "BasePath": "/api/v3",
     "Port": "8989"
   },
-  "JellyfinConfig": {
-    "BaseUrl": "http://10.0.0.23:8096",
-    "ApiKey": "your_jellyfin_api_key_here",
-    "UserId": "your_jellyfin_user_id_here"
-  },
   "PlexConfig": {
     "BaseUrl": "http://10.0.0.23:32400",
     "Token": "your_plex_token_here"
