@@ -1,4 +1,11 @@
 ﻿using System.Text.Json;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using RadarrSonarrMcp.Configuration;
+using RadarrSonarrMcp.Services;
 
 namespace RadarrSonarrMcp;
 
@@ -50,7 +57,8 @@ class Program
       Console.Error.WriteLine($"  Transport Mode: {(useHttp ? "HTTP" : "stdio")}");
       if (useHttp)
       {
-        Console.Error.WriteLine($"  HTTP Port: {settings.ServerConfig.Port}");
+        Console.Error.WriteLine($"  HTTP Port: {settings.McpServerConfig.Port}");
+        Console.Error.WriteLine($"  HTTPS: {(settings.McpServerConfig.UseHttps ? "Enabled" : "Disabled")}");
       }
       Console.Error.WriteLine();
 
@@ -118,6 +126,18 @@ class Program
     builder.Logging.AddConsole();
     builder.Logging.SetMinimumLevel(LogLevel.Information);
 
+    // Configure Kestrel for HTTPS if enabled
+    if (settings.McpServerConfig.UseHttps)
+    {
+      builder.WebHost.ConfigureKestrel(options =>
+      {
+        options.ListenLocalhost(settings.McpServerConfig.Port, listenOptions =>
+        {
+          listenOptions.UseHttps(); // Uses the development certificate
+        });
+      });
+    }
+
     // Register services
     RegisterServices(builder.Services, settings);
 
@@ -135,11 +155,26 @@ class Program
     Console.Error.WriteLine("Starting HTTP MCP server...");
     PrintRegisteredTools();
 
-    var url = $"http://localhost:{settings.ServerConfig.Port}";
+    var protocol = settings.McpServerConfig.UseHttps ? "https" : "http";
+    var url = $"{protocol}://localhost:{settings.McpServerConfig.Port}";
     Console.Error.WriteLine($"Server listening on: {url}");
+    
+    if (settings.McpServerConfig.UseHttps)
+    {
+      Console.Error.WriteLine("HTTPS is enabled. Ensure development certificate is trusted:");
+      Console.Error.WriteLine("  dotnet dev-certs https --trust");
+    }
     Console.Error.WriteLine();
 
-    await app.RunAsync(url);
+    // Only specify URL if not using HTTPS (Kestrel config handles HTTPS)
+    if (settings.McpServerConfig.UseHttps)
+    {
+      await app.RunAsync();
+    }
+    else
+    {
+      await app.RunAsync(url);
+    }
 
     return 0;
   }

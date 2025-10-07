@@ -26,6 +26,9 @@ This MCP server allows AI assistants to query and manage your movie and TV show 
    git clone https://github.com/yourusername/radarr-sonarr-mcp.git
    cd radarr-sonarr-mcp
    .\publish.ps1
+   
+   # Or specify a custom output path:
+   # .\publish.ps1 -OutputPath "C:\MyApps\MCP"
    ```
 
 2. **Configure:**
@@ -129,12 +132,38 @@ Edit the `config.json` file in the same directory as the executable:
     "Token": "YOUR_PLEX_TOKEN"
   },
   "McpServerConfig": {
-    "Port": 3000
+    "Port": 3000,
+    "UseHttps": false
   }
 }
 ```
 
-**Note**: The `McpServerConfig.Port` is only used when running in HTTP mode.
+**Note**: The `McpServerConfig` settings are only used when running in HTTP mode.
+
+### HTTPS Support
+
+To enable HTTPS for HTTP mode:
+
+1. **Trust the development certificate** (one-time setup):
+   ```powershell
+   dotnet dev-certs https --trust
+   ```
+
+2. **Enable HTTPS in config.json**:
+   ```json
+   "McpServerConfig": {
+     "Port": 3000,
+     "UseHttps": true
+   }
+   ```
+
+3. **Run in HTTP mode**:
+   ```powershell
+   dotnet run -- --http
+   # Server will listen on https://localhost:3000
+   ```
+
+**Note**: HTTPS is only available in HTTP transport mode. stdio mode (default for Claude Desktop) does not use HTTPS.
 
 ### Finding API Keys
 

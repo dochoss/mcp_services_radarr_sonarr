@@ -11,6 +11,11 @@ public class AppSettings
     public ServicesServerConfig ServicesServerConfig { get; set; } = new();
 
     /// <summary>
+    /// Alias for ServicesServerConfig to support legacy config files.
+    /// </summary>
+    public ServicesServerConfig NasConfig { get => ServicesServerConfig; set => ServicesServerConfig = value; }
+
+    /// <summary>
     /// Radarr API configuration.
     /// </summary>
     public RadarrConfig RadarrConfig { get; set; } = new();
@@ -29,6 +34,11 @@ public class AppSettings
     /// MCP Server configuration.
     /// </summary>
     public McpServerConfig McpServerConfig { get; set; } = new();
+
+    /// <summary>
+    /// Alias for McpServerConfig to support legacy config files.
+    /// </summary>
+    public McpServerConfig ServerConfig { get => McpServerConfig; set => McpServerConfig = value; }
 }
 
 /// <summary>
@@ -56,6 +66,12 @@ public class McpServerConfig
     /// Port for the MCP server to listen on.
     /// </summary>
     public int Port { get; set; } = 3000;
+
+    /// <summary>
+    /// Whether to use HTTPS for the HTTP transport mode.
+    /// Requires development certificate to be trusted: dotnet dev-certs https --trust
+    /// </summary>
+    public bool UseHttps { get; set; } = false;
 }
 
 /// <summary>

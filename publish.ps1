@@ -1,9 +1,19 @@
 # PowerShell script to publish a self-contained executable for Windows
 # This creates a standalone .exe that includes the .NET runtime
+#
+# Usage:
+#   .\publish.ps1                                    # Default: Release build to standard location
+#   .\publish.ps1 -Configuration Debug               # Debug build
+#   .\publish.ps1 -OutputPath "C:\MyApps\MCP"       # Custom absolute path
+#   .\publish.ps1 -OutputPath ".\dist"              # Custom relative path
+#   .\publish.ps1 -OutputPath "%APPDATA%\MCP"       # Windows environment variable
+#   .\publish.ps1 -OutputPath "$env:LOCALAPPDATA\MCP"  # PowerShell environment variable
+#   .\publish.ps1 -Runtime "linux-x64"              # Different runtime
 
 param(
     [string]$Configuration = "Release",
-    [string]$Runtime = "win-x64"
+    [string]$Runtime = "win-x64",
+    [string]$OutputPath = "%USERPROFILE%\Desktop\RadarrSonarrMCP"  # Default to Desktop folder (expanded later
 )
 
 Write-Host "============================================" -ForegroundColor Cyan
@@ -13,7 +23,21 @@ Write-Host ""
 
 # Navigate to project directory
 $ProjectPath = "$PSScriptRoot\RadarrSonarrMcp"
-$PublishPath = "$ProjectPath\bin\$Configuration\net8.0\$Runtime\publish"
+
+# Determine publish path
+if ([string]::IsNullOrWhiteSpace($OutputPath)) {
+    $PublishPath = "$ProjectPath\bin\$Configuration\net8.0\$Runtime\publish"
+} else {
+    # Expand environment variables (e.g., %APPDATA%, $env:LOCALAPPDATA)
+    $ExpandedPath = [System.Environment]::ExpandEnvironmentVariables($OutputPath)
+    
+    # Use custom output path (expand relative paths)
+    if ([System.IO.Path]::IsPathRooted($ExpandedPath)) {
+        $PublishPath = $ExpandedPath
+    } else {
+        $PublishPath = Join-Path $PSScriptRoot $ExpandedPath
+    }
+}
 
 Write-Host "Configuration: $Configuration" -ForegroundColor Yellow
 Write-Host "Runtime: $Runtime" -ForegroundColor Yellow

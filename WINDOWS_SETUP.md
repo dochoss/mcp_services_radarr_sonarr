@@ -177,6 +177,49 @@ nssm remove RadarrSonarrMCP confirm
 
 **Note:** Running as a Windows Service is optional. Most users can simply let ChatGPT/Claude Desktop launch the process directly.
 
+## HTTPS Support (HTTP Mode Only)
+
+If you're running the server in HTTP mode (not stdio), you can enable HTTPS:
+
+### 1. Trust the Development Certificate
+
+First, trust the ASP.NET Core development certificate (one-time setup):
+
+```powershell
+dotnet dev-certs https --trust
+```
+
+This will prompt you to trust the certificate. Click "Yes" to proceed.
+
+### 2. Enable HTTPS in Configuration
+
+Edit your `config.json` file and set `UseHttps` to `true`:
+
+```json
+{
+  "McpServerConfig": {
+    "Port": 3000,
+    "UseHttps": true
+  }
+}
+```
+
+### 3. Run in HTTP Mode
+
+```powershell
+# From the publish directory
+cd C:\Users\YourUsername\source\repos\mcp_services_radarr_sonarr\RadarrSonarrMcp\bin\Release\net8.0\win-x64\publish
+.\RadarrSonarrMcp.exe --http
+```
+
+The server will now listen on `https://localhost:3000` (or your configured port).
+
+**Important Notes:**
+- HTTPS only works in HTTP transport mode (`--http` flag)
+- stdio mode (default for Claude Desktop) does not use or require HTTPS
+- The development certificate is automatically used for localhost
+- For production deployments, you may want to use a real certificate
+
 ## Troubleshooting
 
 ### Desktop App Can't Find the Server
@@ -229,7 +272,8 @@ If the server fails to start:
     "Token": "your_plex_token_here"
   },
   "McpServerConfig": {
-    "Port": 3000
+    "Port": 3000,
+    "UseHttps": false
   }
 }
 ```

@@ -17,7 +17,8 @@
     "BaseUrl": "http://localhost:32400",
     "Token": "your_plex_token_here"
   },
-  "ServerConfig": {
-    "Port": 3000
+  "McpServerConfig": {
+    "Port": 3000,
+    "UseHttps": false
   }
 }
